@@ -33,9 +33,23 @@ be generated like this from `bird` if you have a BGP feed:
 
 # Tools
 `dnsscan` scans a tiny part of the internet for nameservers & open
-resolvers. This tool is not functional for now.
+resolvers. 
 
 `makemap` maps the internet.
+
+## dnsscan
+`dnsscan` is run like this:
+
+```
+dnsscan samples/prefixes
+```
+It then sends out 100,000 packets to random and sub-random internet
+addresses, and writes out the results to four files:
+
+ * sobplot, Sobol random IP addresses: queries responses response-percentage
+ * rndplot, random IP addresses: queries responses response-percentage
+ * comboplot, sum of the two files above: queries responses response-percentage
+ * oresplot, open resolvers from top-2 scans: queries open-resolvers open-percentage
 
 ## Making the internet map
 `makemap` reads the prefixes and turns them into a 3D plot in a file called
