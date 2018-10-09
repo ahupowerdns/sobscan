@@ -9,6 +9,8 @@ of traffic.
 This makes it possible to make frequent statistics without alarming amounts
 of traffic
 
+![Sample plot](sample/splot.png)
+
 ## Compiling
 Requires a somewhat recent C++ compiler. You may have to issue:
 
