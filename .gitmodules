@@ -1,0 +1,6 @@
+[submodule "ext/simplesocket"]
+	path = ext/simplesocket
+	url = https://github.com/ahupowerdns/simplesocket.git
+[submodule "ext/hello-dns"]
+	path = ext/hello-dns
+	url = https://github.com/ahupowerdns/hello-dns
