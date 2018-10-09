@@ -2,7 +2,7 @@
 Many projects make scans of the entire internet to count the number of
 servers for certain protocols, or how these servers behave.
 
-In contract, this program attempts to not scan the entire internet, but
+In contrast, this program attempts to not scan the entire internet, but
 by making use of statistics, arrive at useful numbers with a minimal amount
 of traffic.
 
@@ -29,6 +29,12 @@ be generated like this from `bird` if you have a BGP feed:
 ```
 # birdc show route | tail -n +1 | cut -f1 -d" " > prefixes
 ```
+
+# Tools
+`dnsscan` scans a tiny part of the internet for nameservers & open
+resolvers. This tool is not functional for now.
+
+`makemap` maps the internet.
 
 ## Making the internet map
 `makemap` reads the prefixes and turns them into a 3D plot in a file called
