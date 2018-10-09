@@ -1,3 +1,15 @@
+#include "sobseq.hh"
+#include <vector>
+#include <fstream>
+#include "netmask.hh"
+#include <random>
+#include "sclasses.hh"
+#include "record-types.hh"
+#include <thread>
+#include "common.hh"
+
+using namespace std;
+
 auto makeIPStr(double a, double b, double c, double d)
 {
   ostringstream ipstream;
@@ -46,12 +58,22 @@ void listenerThread(int s, unsigned int* counter, string name)
       (*counter)++;
     }
     catch(std::exception& e) {
-      cout<<"Error parsing RNS response from "<<dest.toString()<<endl;
+      cout<<"Error parsing DNS response from "<<dest.toString()<<": "<<e.what()<<endl;
     }
       
   }
 }
 
+int main(int argc, char**argv)
+{
+  if(argc != 2) {
+    cout<<"Syntax: dnsscan prefixesfile\n";
+    return EXIT_FAILURE;
+  }
+  NetmaskTree<bool> table;
+
+  loadNetmaskTree(argv[1], table);
+  
   SobolSequence ss;
   vector<double> ip(4);
 
@@ -70,8 +92,8 @@ void listenerThread(int s, unsigned int* counter, string name)
   sobthread.detach();
   rndthread.detach();
   string dnsquery = makeDNSQuery("whoami-ecs.lua.powerdns.org");
-  ofstream dnsplot("dnsplot");
-  for(unsigned int n = 0; ; ++n) {
+  ofstream sobplot("sobplot"), rndplot("rndplot"), oresplot("oresplot"), comboplot("comboplot");
+  for(unsigned int n = 0; (sobmatches + rndmatches) < 100000 ; ++n) {
     ss.get(4, ip);
     auto str = makeIPStr(ip[0], ip[1], ip[2], ip[3]);
     ComboAddress dst(str, 53);
@@ -86,8 +108,16 @@ void listenerThread(int s, unsigned int* counter, string name)
       ++rndmatches;
     }
     usleep(1000);
+
+
     if(!(n%1024)) {
-      cout<<n<<'\t'<<sobresponses<<'\t'<<rndresponses<<'\t'<<g_openResolvers<<'\t'<<(100.0*sobresponses/n)<<'\t'<<(100.0*rndresponses/n)<<endl;
-      dnsplot<<n<<'\t'<<sobresponses<<'\t'<<rndresponses<<'\t'<<g_openResolvers<<'\t'<<(100.0*sobresponses/n)<<'\t'<<(100.0*rndresponses/n)<<endl;
+      cout<<n<<endl;
+      sobplot << sobmatches << '\t' << sobresponses << '\t' << (100.0*sobresponses/sobmatches) << endl;
+      rndplot << rndmatches << '\t' << rndresponses << '\t' << (100.0*rndresponses/rndmatches) << endl;
+      oresplot << (sobmatches + rndmatches) << '\t' << g_openResolvers << '\t' << (100.0*g_openResolvers / (sobmatches + rndmatches)) << endl;
+      comboplot << (sobmatches + rndmatches) << '\t' << sobresponses + rndresponses << '\t' << 100.0*(sobresponses+rndresponses)/(sobmatches+rndmatches) << endl;
     }
+    
   }
+  cout<<"\nDone"<<endl;
+}

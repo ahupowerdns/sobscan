@@ -1,13 +1,8 @@
-#include "sobseq.hh"
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include "netmask.hh"
 #include <random>
-#include "sclasses.hh"
-#include "record-types.hh"
-#include <thread>
-
+#include "common.hh"
 using namespace std;
 
 int main(int argc, char**argv)
@@ -16,17 +11,9 @@ int main(int argc, char**argv)
     cout<<"Syntax: makemap prefixesfile\n";
     return EXIT_FAILURE;
   }
-  std::string line;
-  ifstream netmasks(argv[1]);
   NetmaskTree<bool> table;
-
-  while(getline(netmasks, line)) {
-    auto pos = line.find_first_of(" \n\r;");
-    if(pos != string::npos)
-      line.resize(pos);
-    Netmask nm(line);
-    table.insert(nm);
-  }
+  loadNetmaskTree(argv[1], table);
+  
   cout<<"\rHave "<<table.size()<<" netmasks"<<endl;
   
   vector<vector<int>> plot;
