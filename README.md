@@ -12,7 +12,8 @@ of traffic
 ![Sample plot](sample/splot.png)
 
 ## Compiling
-Requires a somewhat recent C++ compiler. You may have to issue:
+Requires a somewhat recent C++ compiler and installing (for now)
+'libboost-dev' or 'boost-devel'. Then do:
 
 ```
 git submodule update --init
@@ -27,7 +28,7 @@ A sample file `prefixes` is provided in the `sample` directory.  It can also
 be generated like this from `bird` if you have a BGP feed:
 
 ```
-# birdc show route | tail -n +1 | cut -f1 -d" " > prefixes
+# birdc show route primary | tail -n +2 | cut -f1 -d" " > prefixes
 ```
 
 # Tools
