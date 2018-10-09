@@ -9,11 +9,20 @@ of traffic.
 This makes it possible to make frequent statistics without alarming amounts
 of traffic
 
+## Compiling
+Requires a somewhat recent C++ compiler. You may have to issue:
+
+```
+git submodule update --init
+```
+
+To get two dependencies, and then run `make`.
+
 ## Prefixes file
 In order to be up to date, the tool needs a list of announced prefixes.
 
-A sample file is provided in the `sample` directory. It can also be
-generated like this from `bird` if you have a BGP feed:
+A sample file `prefixes` is provided in the `sample` directory.  It can also
+be generated like this from `bird` if you have a BGP feed:
 
 ```
 # birdc show route | tail -n +1 | cut -f1 -d" " > prefixes
@@ -35,3 +44,4 @@ Writing data to file 'denso'
 $ gnuplot
 gnuplot> splot 'denso' u 1:2:3 palette
 ```
+
