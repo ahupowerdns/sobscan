@@ -12,11 +12,10 @@ of traffic
 ![Sample plot](sample/splot.png)
 
 ## Compiling
-Requires a somewhat recent C++ compiler and installing (for now)
-'libboost-dev' or 'boost-devel'. Then do:
+Requires a somewhat recent C++ compiler. Then do:
 
 ```
-git submodule update --init
+git submodule update --init --recurse
 ```
 
 To get two dependencies, and then run `make`.
